@@ -71,6 +71,9 @@ public final class Stop extends IdentityBean<AgencyAndId> {
 
   @CsvField(name="platform_code", optional = true)
   private String platformCode;
+  
+  @CsvField(name="trips_aggregated", optional = true)
+  private String tripsAggregated;
 
   public Stop() {
 
@@ -92,6 +95,7 @@ public final class Stop extends IdentityBean<AgencyAndId> {
     this.timezone = obj.timezone;
     this.vehicleType = obj.vehicleType;
     this.platformCode = obj.platformCode;
+    this.tripsAggregated = obj.tripsAggregated;
   }
 
   public AgencyAndId getId() {
@@ -225,5 +229,13 @@ public final class Stop extends IdentityBean<AgencyAndId> {
 
   public void setPlatformCode(String platformCode) {
     this.platformCode = platformCode;
+  }
+  
+  public String getTripsAggregated() {
+	return tripsAggregated;
+  }
+  
+  public void setTripsAggregated(String tripsAggregated) {
+	this.tripsAggregated = tripsAggregated;
   }
 }

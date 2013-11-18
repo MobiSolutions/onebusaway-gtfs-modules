@@ -61,6 +61,9 @@ public final class Route extends IdentityBean<AgencyAndId> {
   @CsvField(name="bikes_allowed", optional = true, defaultValue = "0")
   private int bikesAllowed = 0;
 
+  @CsvField(name="competent_authority", optional = true)
+  private String competentAuthority;
+  
   public Route() {
 
   }
@@ -76,6 +79,7 @@ public final class Route extends IdentityBean<AgencyAndId> {
     this.color = r.color;
     this.textColor = r.textColor;
     this.bikesAllowed = r.bikesAllowed;
+    this.competentAuthority = r.competentAuthority;
   }
 
   public AgencyAndId getId() {
@@ -173,6 +177,14 @@ public final class Route extends IdentityBean<AgencyAndId> {
    */
   public void setBikesAllowed(int bikesAllowed) {
     this.bikesAllowed = bikesAllowed;
+  }
+
+  public String getCompetentAuthority() {
+	return competentAuthority;
+  }
+
+  public void setCompetentAuthority(String competentAuthority) {
+	this.competentAuthority = competentAuthority;
   }
 
   @Override
