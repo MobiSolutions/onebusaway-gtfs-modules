@@ -68,6 +68,12 @@ public final class Trip extends IdentityBean<AgencyAndId> {
 
   @CsvField(name="trip_long_name", optional = true)
   private String tripLongName;
+
+  @CsvField(name="direction_code", optional = true)
+  private String directionCode;
+  
+  @CsvField(name="primary_trip", optional = true)
+  private int primaryTrip = 0;
   
   public Trip() {
 
@@ -202,6 +208,22 @@ public final class Trip extends IdentityBean<AgencyAndId> {
 	this.tripLongName = tripLongName;
   }
 
+  public String getDirectionCode() {
+	return directionCode;
+  }
+  
+  public void setDirectionCode(String directionCode) {
+	this.directionCode = directionCode;
+  }
+  
+  public int getPrimaryTrip() {
+	return primaryTrip;
+  }
+  
+  public void setPrimaryTrip(int primaryTrip) {
+	this.primaryTrip = primaryTrip;
+  }
+  
   public String toString() {
     return "<Trip " + getId() + ">";
   }
