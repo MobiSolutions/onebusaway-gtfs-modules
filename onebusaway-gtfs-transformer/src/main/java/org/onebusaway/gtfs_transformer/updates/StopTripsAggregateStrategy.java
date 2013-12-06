@@ -16,9 +16,9 @@
 package org.onebusaway.gtfs_transformer.updates;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+import java.util.TreeSet;
 
 import org.onebusaway.gtfs.model.ServiceCalendar;
 import org.onebusaway.gtfs.model.Stop;
@@ -37,7 +37,7 @@ public class StopTripsAggregateStrategy implements GtfsTransformStrategy {
 		
 	    Collection<Stop> stops = dao.getAllStops();
 	    for (Stop s : stops) {
-	    	Set<TripAggregate> trips = new HashSet<TripAggregate>();
+	    	TreeSet<TripAggregate> trips = new TreeSet<TripAggregate>();
 	    	List<StopTime> stopTimes = dao.getStopTimesForStop(s);
 	    	for (StopTime st : stopTimes) {
 	    		Trip trip = st.getTrip();
@@ -45,6 +45,7 @@ public class StopTripsAggregateStrategy implements GtfsTransformStrategy {
 	    		TripAggregate tripAggregate = new TripAggregate(
 	    				trip.getRoute().getId().getId(), 
 	    				trip.getRoute().getShortName(),
+	    				trip.getRoute().getShortNameSortable(),
 	    				trip.getTripLongName(),
 	    				trip.getRoute().getType(),
 	    				trip.getTripHeadsign(),
@@ -57,19 +58,21 @@ public class StopTripsAggregateStrategy implements GtfsTransformStrategy {
 	    }
 	}
 	
-	class TripAggregate {
+	class TripAggregate implements Comparable {
 
 	    private String tripLongName;
 	    private String headsign;
 	    private String routeId;
 	    private String routeShortName;
+	    private String routeShortNameSortable;
 	    private int routeType;
 	    private String startDate;
 	    private String endDate;
 
-	    public TripAggregate(String routeId, String routeShortName, String tripLongName, int routeType, String headsign, String startDate, String endDate) {
+	    public TripAggregate(String routeId, String routeShortName, String routeShortNameSortable, String tripLongName, int routeType, String headsign, String startDate, String endDate) {
 	        this.routeId = routeId;
 	        this.routeShortName = routeShortName;
+	        this.routeShortNameSortable = routeShortNameSortable;
 	        this.tripLongName = tripLongName;
 	        this.routeType = routeType;
 	        this.headsign = headsign;
@@ -133,6 +136,14 @@ public class StopTripsAggregateStrategy implements GtfsTransformStrategy {
 			this.endDate = endDate;
 		}
 
+		public String getRouteShortNameSortable() {
+			return routeShortNameSortable;
+		}
+
+		public void setRouteShortNameSortable(String routeShortNameSortable) {
+			this.routeShortNameSortable = routeShortNameSortable;
+		}
+
 		@Override
 	    public int hashCode() {
 	    	return routeId.hashCode() ^ tripLongName.hashCode();
@@ -140,8 +151,16 @@ public class StopTripsAggregateStrategy implements GtfsTransformStrategy {
 	    
 	    @Override
 	    public boolean equals(Object obj) {
-	    	return routeId.equals(((TripAggregate)obj).getRouteId()) && tripLongName.equals(((TripAggregate)obj).getTripLongName());
+	    	return routeId.equals(((TripAggregate)obj).getRouteId()) && routeShortName.equals(((TripAggregate)obj).getRouteShortName());
 	    }
+
+		@Override
+		public int compareTo(Object o) {
+			if (routeShortNameSortable != null && ((TripAggregate)o).routeShortNameSortable != null) {
+				return routeShortNameSortable.compareTo(((TripAggregate)o).routeShortNameSortable);
+			}
+			return routeShortName.compareTo(((TripAggregate)o).routeShortName);
+		}
 
 	}
 }
