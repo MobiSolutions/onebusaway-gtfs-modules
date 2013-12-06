@@ -64,6 +64,9 @@ public final class Route extends IdentityBean<AgencyAndId> {
   @CsvField(name="competent_authority", optional = true)
   private String competentAuthority;
   
+  @CsvField(name="short_name_sortable", optional = true)
+  private String shortNameSortable;
+  
   public Route() {
 
   }
@@ -80,6 +83,7 @@ public final class Route extends IdentityBean<AgencyAndId> {
     this.textColor = r.textColor;
     this.bikesAllowed = r.bikesAllowed;
     this.competentAuthority = r.competentAuthority;
+    this.shortNameSortable = r.shortNameSortable;
   }
 
   public AgencyAndId getId() {
@@ -185,6 +189,14 @@ public final class Route extends IdentityBean<AgencyAndId> {
 
   public void setCompetentAuthority(String competentAuthority) {
 	this.competentAuthority = competentAuthority;
+  }
+
+  public String getShortNameSortable() {
+	return shortNameSortable;
+  }
+
+  public void setShortNameSortable(String shortNameSortable) {
+	this.shortNameSortable = shortNameSortable;
   }
 
   @Override

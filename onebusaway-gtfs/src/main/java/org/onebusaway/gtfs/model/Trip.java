@@ -75,6 +75,9 @@ public final class Trip extends IdentityBean<AgencyAndId> {
   @CsvField(name="primary_trip", optional = true)
   private int primaryTrip = 0;
   
+  @CsvField(name="route_type", optional = true)
+  private int routeType;
+
   public Trip() {
 
   }
@@ -224,6 +227,14 @@ public final class Trip extends IdentityBean<AgencyAndId> {
 	this.primaryTrip = primaryTrip;
   }
   
+  public int getRouteType() {
+	return routeType;
+  }
+
+  public void setRouteType(int routeType) {
+	this.routeType = routeType;
+  }
+
   public String toString() {
     return "<Trip " + getId() + ">";
   }
