@@ -20,8 +20,6 @@ import org.onebusaway.gtfs.model.Trip;
 import org.onebusaway.gtfs.services.GtfsMutableRelationalDao;
 import org.onebusaway.gtfs_transformer.services.GtfsTransformStrategy;
 import org.onebusaway.gtfs_transformer.services.TransformContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,19 +39,13 @@ public class PrimaryTripFromDirectionCodeConvertStrategy implements GtfsTransfor
         add("B>A");
     }};
     private static final String DIRECTION_CODE_SEPARATOR = ">";
-    private static Logger _log = LoggerFactory.getLogger(PrimaryTripFromDirectionCodeConvertStrategy.class);
 
     @Override
     public void run(TransformContext context, GtfsMutableRelationalDao dao) {
 
         Collection<Trip> allTrips = dao.getAllTrips();
-        Collection<Route> allRoutes = dao.getAllRoutes();
-
-        for (Route route : allRoutes) {
-            _log.error(String.valueOf(route));
-        }
-
         Map<Route, List<Trip>> routeTrips = new HashMap<Route, List<Trip>>();
+
         for (Trip trip : allTrips) {
             Route route = trip.getRoute();
             List<Trip> trips = routeTrips.get(route);
