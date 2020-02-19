@@ -96,6 +96,9 @@ public final class Trip extends IdentityBean<AgencyAndId> {
     this.tripBikesAllowed = obj.tripBikesAllowed;
     this.bikesAllowed = obj.bikesAllowed;
     this.tripLongName = obj.tripLongName;
+    this.directionCode = obj.directionCode;
+    this.primaryTrip = obj.primaryTrip;
+    this.routeType = obj.routeType;
   }
 
   public AgencyAndId getId() {
@@ -222,7 +225,7 @@ public final class Trip extends IdentityBean<AgencyAndId> {
   public int getPrimaryTrip() {
 	return primaryTrip;
   }
-  
+
   public void setPrimaryTrip(int primaryTrip) {
 	this.primaryTrip = primaryTrip;
   }

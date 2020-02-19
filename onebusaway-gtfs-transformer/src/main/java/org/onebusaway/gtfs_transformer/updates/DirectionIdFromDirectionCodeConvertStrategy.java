@@ -26,19 +26,10 @@ public class DirectionIdFromDirectionCodeConvertStrategy implements GtfsTransfor
 	
 	@Override
 	public void run(TransformContext context, GtfsMutableRelationalDao dao) {
-		
 		Collection<Trip> trips = dao.getAllTrips();
-		
 	    for (Trip t : trips) {
-	    	String code = t.getDirectionCode();
-	    	code = code.replaceAll("[0-9]", "");
-			char start = code.charAt(0);
-			char end = code.charAt(code.length()-1);
-			if (start > end) {
-				t.setDirectionId("0");
-			} else {
-				t.setDirectionId("1");
-			}
+	    	Direction direction = Direction.from(t);
+	    	t.setDirectionId(String.valueOf(direction.getDirectionId()));
 	    	dao.updateEntity(t);
 	    }
 	}
