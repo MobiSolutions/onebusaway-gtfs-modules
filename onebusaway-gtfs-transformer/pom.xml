@@ -60,8 +60,15 @@
             <exclude>src/test/resources/org/onebusaway/gtfs_transformer/**</exclude>
           </excludes>
         </configuration>
-      </plugin>    
-    </plugins>
+      </plugin>
+	  <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<configuration>
+		  <source>8</source>
+		  <target>8</target>
+		</configuration>
+	  </plugin>
+	</plugins>
   </build>
-
 </project>
