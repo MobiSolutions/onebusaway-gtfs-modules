@@ -73,7 +73,9 @@ public class PrimaryTripFromDirectionCodeConvertStrategyTest {
   }
 
   private Collection<Trip> filterDirectionCode(Collection<Trip> trips, String directionCode) {
-    return trips.stream().filter(trip -> trip.getDirectionCode().equals(directionCode)).collect(Collectors.toList());
+    return trips.stream()
+            .filter(trip -> trip.getDirectionCode().equals(directionCode))
+            .collect(Collectors.toList());
   }
 
   private void assertPrimary(Collection<Trip> trips) {
@@ -176,6 +178,23 @@ public class PrimaryTripFromDirectionCodeConvertStrategyTest {
   }
 
   @Test
+  public void test_OUT_FALLBACK_ALPHA_SORT_IN_PRIMARY() throws IOException {
+    putTrips("A1>B", "A>C>B", "B>A");
+
+    GtfsMutableRelationalDao dao = _gtfs.read();
+    _strategy.run(_context, dao);
+
+    Collection<Trip> trips = dao.getAllTrips();
+    assertEquals(3, trips.size());
+
+
+
+    assertTripsByDirectionCode(trips, "A1>B", 1, false);
+    assertTripsByDirectionCode(trips, "A>C>B", 1, true);
+    assertTripsByDirectionCode(trips, "B>A", 1, true);
+  }
+
+  @Test
   public void test_OUT_MULTIPLE_IN_MULTIPLE_REVERSE_EXACT() throws IOException {
     putTrips("A>B", "A>B", "A>C>B", "A>C>B", "B>A", "B>A", "B>C>A", "B>C>A");
 
@@ -241,22 +260,20 @@ public class PrimaryTripFromDirectionCodeConvertStrategyTest {
 
   @Test
   public void test_OUT_MULTIPLE_FALLBACK_IN_MULTIPLE_FALLBACK() throws IOException {
-    putTrips("A>B>C2", "A>B>C1", "A>D", "A>B>C>D", "B>C>A", "D>B", "D>A");
+    putTrips("A>B>C2", "A>B>C1", "A>D", "A>B>C>D", "B>C>A", "D>B");
 
     GtfsMutableRelationalDao dao = _gtfs.read();
     _strategy.run(_context, dao);
 
     Collection<Trip> trips = dao.getAllTrips();
-    assertEquals(7, trips.size());
+    assertEquals(6, trips.size());
 
-    // Sorted alpabetically
-    assertTripsByDirectionCode(trips, "A>B>C1", 1, true);
-    assertTripsByDirectionCode(trips, "A>B>C2", 1, false);
+    assertTripsByDirectionCode(trips, "A>B>C>D", 1, true);
     assertTripsByDirectionCode(trips, "A>D", 1, false);
-    assertTripsByDirectionCode(trips, "A>B>C>D", 1, false);
+    assertTripsByDirectionCode(trips, "A>B>C1", 1, false);
+    assertTripsByDirectionCode(trips, "A>B>C2", 1, false);
     assertTripsByDirectionCode(trips, "B>C>A", 1, true);
     assertTripsByDirectionCode(trips, "D>B", 1, false);
-    assertTripsByDirectionCode(trips, "D>A", 1, false);
   }
 
 

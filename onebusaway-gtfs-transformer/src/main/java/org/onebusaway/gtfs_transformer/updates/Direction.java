@@ -74,7 +74,22 @@ class Direction implements Comparable<Direction> {
 
     @Override
     public int compareTo(Direction other) {
-        return getDirectionCode().compareTo(other.getDirectionCode());
+        List<String> thisStops = getStopsList();
+        List<String> thatStops = other.getStopsList();
+
+        int lenThis = thisStops.size();
+        int lenThat = thatStops.size();
+        int lim = Math.min(lenThis, lenThat);
+        int i = 0;
+        while (i < lim) {
+            int result = thisStops.get(i).compareTo(thatStops.get(i));
+            if (result == 0) {
+                i++;
+                continue;
+            }
+            return result;
+        }
+        return lenThis - lenThat;
     }
 
     private StartEndStopsHolder getStartEndStops() {
